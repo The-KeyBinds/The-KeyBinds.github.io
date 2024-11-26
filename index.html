@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Keybinds™</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" rel="stylesheet">
+  <link rel="icon" href="logo.svg" type="image/svg+xml">
+
+  <meta property="og:title" content="The Keybinds™">
+  <meta property="og:description" content="Code Compile and Transform">
+  <meta property="og:image" content="default.png">   <meta property="og:image:type" content="image/png"> 
+  <meta property="og:image:width" content="1200"> 
+  <meta property="og:image:height" content="1200"> 
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Raleway', sans-serif; 
+      background: linear-gradient(to right, #920DE9, #1536F1);
+      color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden;
+      transition: background 1s ease;
+    }
+
+    .container {
+      max-width: 600px;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      opacity: 1; 
+      visibility: visible;
+      animation: slideIn 2s forwards; 
+    }
+
+    .logo {
+      font-size: 6rem; 
+      margin-bottom: 15px;
+      animation: fadeIn 2s ease-out;
+    }
+
+    .company-name {
+      font-family: 'Raleway', sans-serif;
+      font-weight: bold;
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+    }
+
+    .slogan {
+      font-family: 'Raleway', sans-serif;
+      font-weight: normal;
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    .coming-soon {
+      font-family: 'Raleway', sans-serif;
+      font-weight: normal;
+      font-size: 1.5rem;
+      color: #ffcc00;
+      margin-bottom: 40px;
+      animation: fadeIn 2s ease-out;
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .company-name {
+        font-size: 3rem;
+      }
+
+      .slogan {
+        font-size: 1rem;
+      }
+
+      .coming-soon {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 5rem; 
+      }
+
+      .company-name {
+        font-size: 2.5rem;
+      }
+
+      .slogan {
+        font-size: 0.9rem;
+      }
+
+      .coming-soon {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="logo.svg" alt="Company Logo" style="max-width: 180px; margin-bottom: 20px;">
+    </div>
+    <div class="company-name">The Keybinds™</div>
+    <div class="slogan">"Code Compile and Transform"</div>
+    <div class="coming-soon">Coming Soon...</div> 
+  </div>
+  <div class="copyright">
+    &copy; 2024 The Keybinds™. All Rights Reserved.
+  </div>
+</body>
+</html>
