@@ -1,25 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // FAQ Toggle
-    const faqQuestions = document.querySelectorAll('.faq-question');
-
-    faqQuestions.forEach(question => {
-        question.addEventListener('click', () => {
-            const item = question.parentElement;
-            const isActive = item.classList.contains('active');
-
-            // Close all other items (Optional: remove this loop if you want multiple open)
-            document.querySelectorAll('.faq-item').forEach(i => {
-                i.classList.remove('active');
-            });
-
-            // Toggle current item
-            if (!isActive) {
-                item.classList.add('active');
-            }
-        });
-    });
-
-    // Scroll Animations
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -35,10 +14,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    console.log('Envision Clone');
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        section.classList.add('fade-in-section');
-        observer.observe(section);
+    const fadeElements = document.querySelectorAll('.fade-in-section');
+    fadeElements.forEach(el => observer.observe(el));
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            // Close other items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+
+            // Toggle current item
+            item.classList.toggle('active');
+        });
     });
 });

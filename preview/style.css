@@ -1,5 +1,5 @@
 :root {
-    --bg-color: #050505;
+    --bg-color: transparent;
     --text-color: #ffffff;
     --text-secondary: #a1a1aa;
     --primary-color: #7c3aed;
@@ -7,8 +7,10 @@
     --secondary-color: #db2777;
     /* Pink */
     --accent-gradient: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
-    --card-bg: #121212;
-    --card-border: #27272a;
+    --card-bg: rgba(18, 18, 18, 0.17);
+    --card-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    --glass-blur: blur(10.7px);
     --font-main: 'Outfit', sans-serif;
     --container-width: 1200px;
     --header-height: 80px;
@@ -32,6 +34,16 @@ body {
     color: var(--text-color);
     line-height: 1.6;
     overflow-x: hidden;
+}
+
+#galaxy-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
 }
 
 a {
@@ -84,10 +96,13 @@ ul {
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(5, 5, 5, 0.8);
-    backdrop-filter: blur(10px);
+    width: 100%;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--card-border);
+    box-shadow: var(--glass-shadow);
 }
 
 .header-container {
@@ -168,7 +183,11 @@ ul {
 
 /* About */
 .about {
-    background: #0a0a0a;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
+    border-radius: 16px;
 }
 
 /* Audience */
@@ -186,7 +205,11 @@ ul {
     border-radius: 20px;
     font-size: 0.9rem;
     color: var(--text-secondary);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
 }
 
 /* Benefits */
@@ -202,11 +225,13 @@ ul {
     border-radius: 16px;
     border: 1px solid var(--card-border);
     transition: transform 0.3s ease;
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
 }
 
 .benefit-card:hover {
     transform: translateY(-5px);
-    border-color: var(--primary-color);
 }
 
 .benefit-card h3 {
@@ -235,6 +260,9 @@ ul {
     padding: 30px;
     border-radius: 16px;
     border: 1px solid var(--card-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
 }
 
 .step-number {
@@ -256,10 +284,13 @@ ul {
 .process-cta {
     text-align: center;
     margin-top: 60px;
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(219, 39, 119, 0.1) 100%);
     padding: 40px;
     border-radius: 20px;
-    border: 1px solid rgba(124, 58, 237, 0.2);
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
 }
 
 .process-cta h3 {
@@ -279,6 +310,9 @@ ul {
     padding: 30px;
     border-radius: 16px;
     border: 1px solid var(--card-border);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
 }
 
 .testimonial-card p {
@@ -345,7 +379,10 @@ ul {
 
 /* Footer */
 .footer {
-    background: #000;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-shadow);
     padding: 60px 0 20px;
     border-top: 1px solid var(--card-border);
 }
@@ -492,5 +529,4 @@ ul {
 .step:hover,
 .testimonial-card:hover {
     box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
-    border-color: rgba(124, 58, 237, 0.5);
 }
