@@ -10,7 +10,7 @@
     --card-bg: rgba(18, 18, 18, 0.17);
     --card-border: rgba(255, 255, 255, 0.2);
     --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    --glass-blur: blur(10.7px);
+    --glass-blur: blur(30px);
     --font-main: 'Outfit', sans-serif;
     --container-width: 1200px;
     --header-height: 80px;
@@ -95,7 +95,6 @@ ul {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
     width: 100%;
     background: var(--card-bg);
     backdrop-filter: var(--glass-blur);
@@ -228,6 +227,8 @@ ul {
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     box-shadow: var(--glass-shadow);
+    position: relative;
+    z-index: 1;
 }
 
 .benefit-card:hover {
@@ -263,6 +264,8 @@ ul {
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     box-shadow: var(--glass-shadow);
+    position: relative;
+    z-index: 1;
 }
 
 .step-number {
@@ -291,6 +294,8 @@ ul {
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     box-shadow: var(--glass-shadow);
+    position: relative;
+    z-index: 1;
 }
 
 .process-cta h3 {
@@ -313,6 +318,8 @@ ul {
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     box-shadow: var(--glass-shadow);
+    position: relative;
+    z-index: 1;
 }
 
 .testimonial-card p {
