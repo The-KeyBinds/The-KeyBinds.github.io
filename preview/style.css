@@ -190,7 +190,7 @@ ul {
 }
 
 /* About */
-.about {}
+/* .about {} - Removed empty ruleset */
 
 /* Audience */
 .audience-list {
@@ -580,6 +580,53 @@ ul {
     .showcase-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Seamless "Many More" Design */
+.showcase-item.showcase-more {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.more-work-card {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 9/16;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.more-work-card:hover {
+    background: transparent;
+    transform: scale(1.05);
+}
+
+.more-work-card h3 {
+    font-size: 2.5rem;
+    /* Larger text */
+    font-weight: 800;
+    margin-bottom: 12px;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+    /* Glow effect */
+}
+
+.more-work-card p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    font-weight: 500;
 }
 
 /* Custom Video Player */
