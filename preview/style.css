@@ -541,19 +541,45 @@ ul {
     box-shadow: 0 0 30px rgba(124, 58, 237, 0.15);
 }
 
-/* Showcase */
+/* Showcase Scroller */
 .showcase .container {
-    max-width: 85%;
+    max-width: 100%;
+    /* Full width for scrolling effect */
+    padding: 0;
+    overflow: hidden;
 }
 
-.showcase-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+.showcase-scroller {
+    display: flex;
+    flex-direction: column;
     gap: 30px;
     margin-top: 40px;
+    overflow: hidden;
 }
 
+.scroll-row {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.scroll-track {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    /* Ensure track is wide enough */
+    will-change: transform;
+    /* Optimize for JS animation */
+}
+
+/* Removed auto-scroll animations */
+
 .showcase-item {
+    width: 300px;
+    /* Fixed width for items */
+    height: 533px;
+    /* Aspect ratio 9:16 approx */
+    flex-shrink: 0;
     border-radius: 16px;
     overflow: hidden;
     background: var(--card-bg);
@@ -565,7 +591,8 @@ ul {
 }
 
 .showcase-item:hover {
-    transform: translateY(-5px);
+    transform: scale(1.02);
+    z-index: 10;
 }
 
 .showcase-video {
@@ -577,8 +604,9 @@ ul {
 }
 
 @media (max-width: 768px) {
-    .showcase-grid {
-        grid-template-columns: 1fr;
+    .showcase-item {
+        width: 250px;
+        height: 444px;
     }
 }
 

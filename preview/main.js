@@ -86,4 +86,72 @@ document.addEventListener('DOMContentLoaded', () => {
             progressBar.style.width = '0%';
         });
     });
+    // Hybrid Marquee & Scroll Interaction
+    const showcaseSection = document.querySelector('.showcase');
+    const scrollTrack = document.querySelector('.scroll-track');
+    const showcaseContainer = document.querySelector('.showcase-scroller');
+
+    if (showcaseSection && scrollTrack && showcaseContainer) {
+        let position = 0;
+        const speed = 0.5; // Auto-scroll speed
+        let isHovering = false;
+        let animationId;
+
+        // Calculate single set width (assuming 4 sets of items)
+        // We need to wait for images/videos to load or just measure the first half
+        // A safer way is to measure the total width and divide by 4
+
+        const getResetWidth = () => {
+            return scrollTrack.scrollWidth / 4;
+        };
+
+        const animate = () => {
+            if (!isHovering) {
+                position -= speed;
+            }
+
+            const resetWidth = getResetWidth();
+
+            // Handle infinite loop wrapping
+            if (position <= -resetWidth) {
+                position += resetWidth;
+            } else if (position > 0) {
+                position -= resetWidth;
+            }
+
+            scrollTrack.style.transform = `translateX(${position}px)`;
+            animationId = requestAnimationFrame(animate);
+        };
+
+        // Start animation
+        animate();
+
+        // Hover handlers
+        showcaseContainer.addEventListener('mouseenter', () => {
+            isHovering = true;
+        });
+
+        showcaseContainer.addEventListener('mouseleave', () => {
+            isHovering = false;
+        });
+
+        // Wheel handler
+        showcaseContainer.addEventListener('wheel', (e) => {
+            e.preventDefault(); // Prevent page scroll while interacting
+
+            // Scroll sensitivity
+            const delta = e.deltaY;
+            position -= delta;
+
+            // Immediate boundary check for smooth feel
+            const resetWidth = getResetWidth();
+            if (position <= -resetWidth) {
+                position += resetWidth;
+            } else if (position > 0) {
+                position -= resetWidth;
+            }
+
+            scrollTrack.style.transform = `translateX(${position}px)`;
+        }, { passive: false });
+    }
 });
