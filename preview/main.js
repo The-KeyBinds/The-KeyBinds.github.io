@@ -34,4 +34,56 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.toggle('active');
         });
     });
+
+    // Custom Video Player
+    const videoWrappers = document.querySelectorAll('.video-wrapper');
+
+    videoWrappers.forEach(wrapper => {
+        const video = wrapper.querySelector('video');
+        const playBtn = wrapper.querySelector('.play-btn');
+        const progressBar = wrapper.querySelector('.progress-bar');
+        const progressContainer = wrapper.querySelector('.progress-container');
+        const playIconPath = playBtn.querySelector('path');
+
+        const togglePlay = () => {
+            if (video.paused) {
+                video.play();
+                wrapper.classList.add('playing');
+                playIconPath.setAttribute('d', 'M6 19h4V5H6v14zm8-14v14h4V5h-4z'); // Pause icon
+            } else {
+                video.pause();
+                wrapper.classList.remove('playing');
+                playIconPath.setAttribute('d', 'M8 5v14l11-7z'); // Play icon
+            }
+        };
+
+        playBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            togglePlay();
+        });
+
+        video.addEventListener('click', togglePlay);
+
+        video.addEventListener('timeupdate', () => {
+            if (video.duration) {
+                const progress = (video.currentTime / video.duration) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+        });
+
+        progressContainer.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const rect = progressContainer.getBoundingClientRect();
+            const pos = (e.clientX - rect.left) / rect.width;
+            if (video.duration) {
+                video.currentTime = pos * video.duration;
+            }
+        });
+
+        video.addEventListener('ended', () => {
+            wrapper.classList.remove('playing');
+            playIconPath.setAttribute('d', 'M8 5v14l11-7z');
+            progressBar.style.width = '0%';
+        });
+    });
 });
