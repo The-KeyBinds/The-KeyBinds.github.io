@@ -215,10 +215,26 @@ ul {
 }
 
 /* Benefits */
+.benefits .container {
+    max-width: 1600px;
+}
+
 .benefits-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 30px;
+}
+
+@media (max-width: 1200px) {
+    .benefits-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .benefits-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 .benefit-card {
@@ -577,16 +593,13 @@ ul {
 .showcase-item {
     width: 300px;
     /* Fixed width for items */
-    height: 533px;
+    height: 530px;
     /* Aspect ratio 9:16 approx */
     flex-shrink: 0;
     border-radius: 16px;
     overflow: hidden;
-    background: var(--card-bg);
+    background: transparent;
     border: 1px solid var(--card-border);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    box-shadow: var(--glass-shadow);
     transition: transform 0.3s ease;
 }
 
@@ -658,68 +671,100 @@ ul {
 }
 
 /* Custom Video Player */
-.video-wrapper {
+.vimeo-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
-    cursor: pointer;
 }
 
-.play-btn {
+.vimeo-wrapper::before {
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: white;
-    z-index: 2;
-}
-
-.play-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%) scale(1.1);
-}
-
-.video-wrapper.playing .play-btn {
-    opacity: 0;
-    pointer-events: none;
-}
-
-.video-wrapper:hover .play-btn {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.progress-container {
-    position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
-    width: 100%;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.2);
+    right: 0;
+    bottom: 50px;
+    /* Leave space for Vimeo controls */
+    z-index: 1;
     cursor: pointer;
-    transition: height 0.2s ease;
-    z-index: 2;
 }
 
-.video-wrapper:hover .progress-container {
-    height: 8px;
+.vimeo-wrapper iframe {
+    pointer-events: auto;
+    position: relative;
+    z-index: 0;
 }
 
-.progress-bar {
-    height: 100%;
-    background: var(--accent-gradient);
-    width: 0%;
-    transition: width 0.1s linear;
+/* Calendly Customization */
+.calendly-overlay {
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    animation: fadeIn 0.3s ease-out forwards !important;
+}
+
+.calendly-popup-content {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+    box-shadow: var(--glass-shadow) !important;
+    border-radius: 16px !important;
+    animation: zoomIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.calendly-popup-close {
+    color: white !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.calendly-overlay.is-closing {
+    animation: fadeOut 0.4s ease-in forwards !important;
+}
+
+.calendly-popup-content.is-closing {
+    animation: zoomOut 0.4s cubic-bezier(0.3, 0, 0.8, 0.15) forwards !important;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes zoomOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
 }

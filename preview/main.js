@@ -35,58 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Custom Video Player
-    const videoWrappers = document.querySelectorAll('.video-wrapper');
 
-    videoWrappers.forEach(wrapper => {
-        const video = wrapper.querySelector('video');
-        const playBtn = wrapper.querySelector('.play-btn');
-        const progressBar = wrapper.querySelector('.progress-bar');
-        const progressContainer = wrapper.querySelector('.progress-container');
-        const playIconPath = playBtn.querySelector('path');
-
-        const togglePlay = () => {
-            if (video.paused) {
-                video.play();
-                wrapper.classList.add('playing');
-                playIconPath.setAttribute('d', 'M6 19h4V5H6v14zm8-14v14h4V5h-4z'); // Pause icon
-            } else {
-                video.pause();
-                wrapper.classList.remove('playing');
-                playIconPath.setAttribute('d', 'M8 5v14l11-7z'); // Play icon
-            }
-        };
-
-        playBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            togglePlay();
-        });
-
-        video.addEventListener('click', togglePlay);
-
-        video.addEventListener('timeupdate', () => {
-            if (video.duration) {
-                const progress = (video.currentTime / video.duration) * 100;
-                progressBar.style.width = `${progress}%`;
-            }
-        });
-
-        progressContainer.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const rect = progressContainer.getBoundingClientRect();
-            const pos = (e.clientX - rect.left) / rect.width;
-            if (video.duration) {
-                video.currentTime = pos * video.duration;
-            }
-        });
-
-        video.addEventListener('ended', () => {
-            wrapper.classList.remove('playing');
-            playIconPath.setAttribute('d', 'M8 5v14l11-7z');
-            progressBar.style.width = '0%';
-        });
-    });
-    // Hybrid Marquee & Scroll Interaction
+    // Hybrid Marquee & Scroll Interaction with Vimeo Integration
     const showcaseSection = document.querySelector('.showcase');
     const scrollTrack = document.querySelector('.scroll-track');
     const showcaseContainer = document.querySelector('.showcase-scroller');
@@ -95,18 +45,92 @@ document.addEventListener('DOMContentLoaded', () => {
         let position = 0;
         const speed = 0.5; // Auto-scroll speed
         let isHovering = false;
+        let isVideoPlaying = false; // Track if any video is playing
         let animationId;
 
-        // Calculate single set width (assuming 4 sets of items)
-        // We need to wait for images/videos to load or just measure the first half
-        // A safer way is to measure the total width and divide by 4
+        // Initialize Vimeo Players
+        const vimeoIframes = document.querySelectorAll('.vimeo-wrapper iframe');
+        const vimeoPlayers = [];
 
+        vimeoIframes.forEach((iframe, index) => {
+            // Add unique ID to each iframe for Vimeo API
+            iframe.id = `vimeo-player-${index}`;
+            const player = new Vimeo.Player(iframe);
+            vimeoPlayers.push(player);
+
+            // Listen for play event
+            player.on('play', () => {
+                isVideoPlaying = true;
+            });
+
+            // Listen for pause event
+            player.on('pause', () => {
+                // Check if any other video is still playing
+                Promise.all(vimeoPlayers.map(p => p.getPaused()))
+                    .then(pausedStates => {
+                        // If all videos are paused, resume marquee
+                        isVideoPlaying = pausedStates.every(paused => paused) ? false : true;
+                    });
+            });
+
+            // Listen for ended event
+            player.on('ended', () => {
+                // Check if any other video is still playing
+                Promise.all(vimeoPlayers.map(p => p.getPaused()))
+                    .then(pausedStates => {
+                        isVideoPlaying = pausedStates.every(paused => paused) ? false : true;
+                    });
+            });
+        });
+
+        // Add click handlers to wrappers to play/pause videos
+        const vimeoWrappers = document.querySelectorAll('.vimeo-wrapper');
+        vimeoWrappers.forEach((wrapper, index) => {
+            let clickTimeout = null;
+            let clickCount = 0;
+
+            wrapper.addEventListener('click', (e) => {
+                // Only handle clicks on the overlay area (not on the controls at bottom)
+                const rect = wrapper.getBoundingClientRect();
+                const clickY = e.clientY - rect.top;
+                const controlsHeight = 50; // Height we reserved for controls
+
+                if (clickY < rect.height - controlsHeight) {
+                    clickCount++;
+
+                    if (clickCount === 1) {
+                        // Wait to see if it's a double click
+                        clickTimeout = setTimeout(() => {
+                            // Single click - play/pause
+                            const player = vimeoPlayers[index];
+                            player.getPaused().then(paused => {
+                                if (paused) {
+                                    player.play();
+                                } else {
+                                    player.pause();
+                                }
+                            });
+                            clickCount = 0;
+                        }, 300); // 300ms delay to detect double click
+                    } else if (clickCount === 2) {
+                        // Double click - fullscreen
+                        clearTimeout(clickTimeout);
+                        const player = vimeoPlayers[index];
+                        player.requestFullscreen();
+                        clickCount = 0;
+                    }
+                }
+            });
+        });
+
+        // Calculate single set width (assuming 4 sets of items)
         const getResetWidth = () => {
             return scrollTrack.scrollWidth / 4;
         };
 
         const animate = () => {
-            if (!isHovering) {
+            // Only move if not hovering AND no video is playing
+            if (!isHovering && !isVideoPlaying) {
                 position -= speed;
             }
 
@@ -154,4 +178,47 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollTrack.style.transform = `translateX(${position}px)`;
         }, { passive: false });
     }
+
+    // Calendly Close Animation
+    const observerCallback = (mutationsList, observer) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(node => {
+                    if (node.classList && node.classList.contains('calendly-overlay')) {
+                        const overlay = node;
+                        const closeBtn = overlay.querySelector('.calendly-popup-close');
+                        const popupContent = overlay.querySelector('.calendly-popup-content');
+
+                        if (closeBtn && popupContent) {
+                            const closeHandler = (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                overlay.classList.add('is-closing');
+                                popupContent.classList.add('is-closing');
+
+                                setTimeout(() => {
+                                    Calendly.closePopupWidget();
+                                }, 400); // Match animation duration
+                            };
+
+                            closeBtn.addEventListener('click', closeHandler);
+                            overlay.addEventListener('click', (e) => {
+                                if (e.target === overlay) {
+                                    closeHandler(e);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    };
+
+    const observerConfig = {
+        childList: true,
+        subtree: false
+    };
+    const bodyObserver = new MutationObserver(observerCallback);
+    bodyObserver.observe(document.body, observerConfig);
 });
